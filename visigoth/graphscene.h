@@ -78,8 +78,6 @@ protected:
 
 private:
     enum ALGOS {
-        BIPARTITE_MODEL,
-        PREFERENTIAL_ATTACHAMENT,
         ERDOS_RENYI,
         BARABASI_ALBERT,
         WATTS_STROGATZ,

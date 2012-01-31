@@ -11,10 +11,8 @@
 
 #include "algorithm.h"
 #include "barabasialbert.h"
-#include "bipartite.h"
 #include "erdosrenyi.h"
 #include "graphscene.h"
-#include "preferential.h"
 #include "statistics.h"
 #include "wattsstrogatz.h"
 
@@ -133,36 +131,6 @@ private slots:
         QCOMPARE(nodesSpin->value(), numNodes2);
     }
 
-    void controlWidgetBipartite() {
-        scene->chooseAlgorithm("Bipartite Model");
-        Bipartite *algo = (Bipartite*)scene->algorithm();
-
-        QSpinBox *uSizeSpin = algo->controlWidget()->findChild<QSpinBox*>("uSizeEdit");
-        QSpinBox *vSizeSpin = algo->controlWidget()->findChild<QSpinBox*>("vSizeEdit");
-
-        int uSize = algo->getUSize();
-        int vSize = algo->getVSize();
-
-        QCOMPARE(uSizeSpin->value(), uSize);
-        QCOMPARE(vSizeSpin->value(), vSize);
-
-        QTest::keyClick(uSizeSpin, Qt::Key_A, Qt::ControlModifier);
-        QTest::keyClicks(uSizeSpin, "27");
-        int uSize1 = algo->getUSize();
-
-        QCOMPARE(uSize1, 27);
-        QCOMPARE(uSizeSpin->value(), uSize1);
-        QCOMPARE(vSizeSpin->value(), vSize);
-
-        QTest::keyClick(vSizeSpin, Qt::Key_A, Qt::ControlModifier);
-        QTest::keyClicks(vSizeSpin, "5");
-        int vSize1 = algo->getVSize();
-
-        QCOMPARE(vSize1, 5);
-        QCOMPARE(uSizeSpin->value(), uSize1);
-        QCOMPARE(vSizeSpin->value(), vSize1);
-    }
-
     void controlWidgetErdos() {
         scene->chooseAlgorithm("Erdos Renyi");
         ErdosRenyi *algo = (ErdosRenyi*)scene->algorithm();
@@ -199,45 +167,6 @@ private slots:
         QCOMPARE(numNodes2, 42);
         QCOMPARE(algo->getProbability(), probability1);
         QCOMPARE(probabilitySpin->value(), probability1);
-        QCOMPARE(nodesSpin->value(), numNodes2);
-    }
-
-    void controlWidgetPreferential() {
-        scene->chooseAlgorithm("Preferential Attachament");
-        Preferential *algo = (Preferential*)scene->algorithm();
-
-        QSpinBox *nodesSpin = algo->controlWidget()->findChild<QSpinBox*>("sizeEdit");
-        QSpinBox *degreeSpin = algo->controlWidget()->findChild<QSpinBox*>("degreeEdit");
-
-        int numNodes = algo->getNumNodes();
-        int nodeDegree = algo->getNodeDegree();
-
-        QCOMPARE(nodesSpin->value(), numNodes);
-        QCOMPARE(degreeSpin->value(), nodeDegree);
-
-        scene->addVertex();
-
-        int numNodes1 = algo->getNumNodes();
-
-        QCOMPARE(numNodes1, numNodes + 1);
-        QCOMPARE(nodesSpin->value(), numNodes1);
-
-        QTest::keyClick(degreeSpin, Qt::Key_A, Qt::ControlModifier);
-        QTest::keyClicks(degreeSpin, "2");
-        int nodeDegree1 = algo->getNodeDegree();
-
-        QCOMPARE(nodeDegree1, 2);
-        QCOMPARE(algo->getNumNodes(), numNodes1);
-        QCOMPARE(nodesSpin->value(), numNodes1);
-        QCOMPARE(degreeSpin->value(), nodeDegree1);
-
-        QTest::keyClick(nodesSpin, Qt::Key_A, Qt::ControlModifier);
-        QTest::keyClicks(nodesSpin, "20");
-        int numNodes2 = algo->getNumNodes();
-
-        QCOMPARE(numNodes2, 20);
-        QCOMPARE(algo->getNodeDegree(), nodeDegree1);
-        QCOMPARE(degreeSpin->value(), nodeDegree1);
         QCOMPARE(nodesSpin->value(), numNodes2);
     }
 
@@ -302,9 +231,7 @@ private:
         QTest::addColumn<QString>("algoName");
 
         QTest::newRow("Barabasi Albert") << "Barabasi Albert";
-        QTest::newRow("Bipartite Model") << "Bipartite Model";
         QTest::newRow("Erdos Renyi") << "Erdos Renyi";
-        QTest::newRow("Preferential Attachament") << "Preferential Attachament";
         QTest::newRow("Watts Strogatz") << "Watts Strogatz";
     }
 };

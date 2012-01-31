@@ -3,8 +3,6 @@
 #include "graphscene.h"
 #include "glgraphwidget.h"
 #include "node.h"
-#include "preferential.h"
-#include "bipartite.h"
 #include "erdosrenyi.h"
 #include "statistics.h"
 #include "barabasialbert.h"
@@ -22,8 +20,6 @@ GraphScene::GraphScene(QObject *parent) :
     myEdgeColour(QColor::fromRgbF(0.0, 0.0, 1.0, 0.5)),
     myNodeColour(QColor::fromRgbF(0.0, 1.0, 0.3, 0.7))
 {
-    myAlgorithms["Preferential Attachament"] = PREFERENTIAL_ATTACHAMENT;
-    myAlgorithms["Bipartite Model"] = BIPARTITE_MODEL;
     myAlgorithms["Erdos Renyi"] = ERDOS_RENYI;
     myAlgorithms["Barabasi Albert"] = BARABASI_ALBERT;
 #ifdef HAS_OAUTH
@@ -209,12 +205,6 @@ void GraphScene::repopulate() {
     reset();
     if (!algo) {
         switch (algoId) {
-        case BIPARTITE_MODEL:
-            algo = new Bipartite(this);
-            break;
-        case PREFERENTIAL_ATTACHAMENT:
-            algo = new Preferential(this);
-            break;
         case ERDOS_RENYI:
             algo = new ErdosRenyi(this);
             break;
